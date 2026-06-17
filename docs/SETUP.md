@@ -53,6 +53,10 @@ flutter run \
   --dart-define=WC_CONSUMER_SECRET=cs_xxxxxxxxxxxxxxxx
 ```
 
+> ⚠️ **Never paste real keys into this file or any tracked file.** Use the
+> git-ignored `config/dev.json` below (copy it from `config/dev.example.json`),
+> or — for CI/APK builds — GitHub repo Secrets. See `docs/BUILD_AND_TEST.md`.
+
 For repeatable builds, put these in a `--dart-define-from-file`:
 
 ```jsonc
