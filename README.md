@@ -93,13 +93,32 @@ Each new feature (product detail, cart, checkout, auth, search) follows the same
 
 ---
 
-## 🗺️ Roadmap (next features to build)
+## 🗺️ Roadmap
 
-1. Product detail screen + variation selector (uses `getVariations`)
-2. Cart (Hive-persisted) + Checkout flow → `createOrder`
-3. SSLCommerz / bKash payment WebView (`docs/PAYMENTS.md`)
-4. Auth screens wired to the JWT endpoints
-5. Search + category listing screens
-6. FCM wiring (`docs/PUSH_NOTIFICATIONS.md`)
+Done:
+- ✅ Dynamic home screen (banners, categories, flash sale, new arrivals)
+- ✅ Product detail screen + variation selector (uses `getVariations`)
+- ✅ Cart (SharedPreferences-persisted) with live badge + quantity editing
+- ✅ Checkout flow → `createOrder` (contact/shipping, payment selection, summary)
+- ✅ SSLCommerz / bKash / COD payment via hosted WebView + status reconcile
+
+Next:
+1. Auth screens wired to the JWT endpoints (interceptor already in place)
+2. Search + category listing screens
+3. Coupon entry + real shipping zones at checkout
+4. FCM wiring (`docs/PUSH_NOTIFICATIONS.md`)
+5. Order history under the Account tab
+
+### Shopping flow (implemented)
+```
+Home / Product card ─▶ Product detail ─▶ Add to cart ─▶ Cart ─▶ Checkout
+                                                                   │
+                          COD ◀──────────────────────────────────┤
+                          Online (SSLCommerz/bKash) ─▶ PaymentWebView
+                                                                   │
+                                              reconcile order status via REST
+                                                                   ▼
+                                                       Order success screen
+```
 
 See `docs/ARCHITECTURE.md` for the data-flow and security model.

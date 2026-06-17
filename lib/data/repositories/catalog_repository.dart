@@ -1,5 +1,6 @@
 import '../models/category.dart';
 import '../models/product.dart';
+import '../models/product_variation.dart';
 import '../services/woocommerce_service.dart';
 import 'demo_data.dart';
 
@@ -41,6 +42,14 @@ class CatalogRepository {
     if (useDemoData) return DemoData.products().firstWhere((p) => p.id == id);
     final raw = await _service.getProduct(id);
     return Product.fromJson(raw);
+  }
+
+  Future<List<ProductVariation>> variations(int productId) async {
+    if (useDemoData) return const [];
+    final raw = await _service.getVariations(productId);
+    return raw
+        .map((e) => ProductVariation.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<ProductCategory>> categories({int? parent}) async {

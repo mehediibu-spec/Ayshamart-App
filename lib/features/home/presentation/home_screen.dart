@@ -5,7 +5,12 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/section_header.dart';
+import '../../../data/models/cart_item.dart';
+import '../../../data/models/product.dart';
 import '../../../data/models/promo_banner.dart';
+import '../../cart/presentation/cart_screen.dart';
+import '../../cart/providers/cart_provider.dart';
+import '../../product/presentation/product_detail_screen.dart';
 import '../providers/home_providers.dart';
 import 'widgets/category_slider.dart';
 import 'widgets/flash_sale_section.dart';
@@ -92,8 +97,8 @@ class HomeScreen extends ConsumerWidget {
                     products: data,
                     endsAt: DateTime.now()
                         .add(const Duration(hours: 5, minutes: 32)),
-                    onProductTap: (p) {/* TODO: push product detail */},
-                    onAddToCart: (p) => _addToCart(context, p.name),
+                    onProductTap: (p) => _openProduct(context, p),
+                    onAddToCart: (p) => _addToCart(context, ref, p),
                   ),
                   loading: () => const _RowShimmer(),
                   error: (_, __) => const SizedBox.shrink(),
@@ -117,8 +122,8 @@ class HomeScreen extends ConsumerWidget {
                     childCount: data.length,
                     itemBuilder: (context, i) => ProductCard(
                       product: data[i],
-                      onTap: () {/* TODO: push product detail */},
-                      onAddToCart: () => _addToCart(context, data[i].name),
+                      onTap: () => _openProduct(context, data[i]),
+                      onAddToCart: () => _addToCart(context, ref, data[i]),
                     ),
                   ),
                 ),
@@ -138,12 +143,37 @@ class HomeScreen extends ConsumerWidget {
     // and navigate via go_router.
   }
 
-  void _addToCart(BuildContext context, String name) {
+  void _openProduct(BuildContext context, Product product) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ProductDetailScreen(product: product),
+      ),
+    );
+  }
+
+  void _addToCart(BuildContext context, WidgetRef ref, Product product) {
+    // Variable products need options chosen → open the detail page instead.
+    if (product.hasVariations) {
+      _openProduct(context, product);
+      return;
+    }
+    ref.read(cartProvider.notifier).add(
+          CartItem(
+            productId: product.id,
+            variationId: null,
+            name: product.name,
+            image: product.primaryImage,
+            price: product.price,
+            variationLabel: null,
+            quantity: 1,
+            maxStock: product.stockQuantity,
+          ),
+        );
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text('$name added to cart'),
+          content: Text('${product.name} added to cart'),
           behavior: SnackBarBehavior.floating,
           backgroundColor: AppColors.primary,
           duration: const Duration(milliseconds: 1200),
@@ -153,11 +183,12 @@ class HomeScreen extends ConsumerWidget {
 }
 
 /// Sticky, branded app bar with a location row, cart action and search field.
-class _HomeAppBar extends StatelessWidget {
+class _HomeAppBar extends ConsumerWidget {
   const _HomeAppBar();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartCount = ref.watch(cartCountProvider);
     return SliverAppBar(
       pinned: true,
       floating: true,
@@ -203,23 +234,29 @@ class _HomeAppBar extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CartScreen()),
+              ),
               icon: const Icon(Icons.shopping_bag_outlined),
             ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                    color: AppColors.sale, shape: BoxShape.circle),
-                child: const Text('2',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 9,
-                        fontWeight: FontWeight.bold)),
+            if (cartCount > 0)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  constraints:
+                      const BoxConstraints(minWidth: 16, minHeight: 16),
+                  decoration: const BoxDecoration(
+                      color: AppColors.sale, shape: BoxShape.circle),
+                  child: Text('$cartCount',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold)),
+                ),
               ),
-            ),
           ],
         ),
         const SizedBox(width: 8),

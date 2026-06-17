@@ -117,6 +117,11 @@ class WooCommerceService {
     return _getList(_wc(ApiConstants.paymentGateways), {});
   }
 
+  /// Fetch a single order (used to reconcile payment status after checkout).
+  Future<Map<String, dynamic>> getOrder(int id) async {
+    return _getObject(_wc('${ApiConstants.orders}/$id'));
+  }
+
   // ---- helpers ----
 
   Future<List<dynamic>> _getList(

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/constants/app_colors.dart';
 import 'core/theme/app_theme.dart';
+import 'features/cart/presentation/cart_screen.dart';
+import 'features/cart/providers/cart_provider.dart';
 import 'features/home/presentation/home_screen.dart';
 import 'providers/core_providers.dart';
 
@@ -32,28 +34,29 @@ class AyshamartApp extends ConsumerWidget {
   }
 }
 
-/// Bottom-navigation shell hosting the five primary tabs. Screens other than
-/// Home are stubbed for now and meant to be filled out feature-by-feature.
-class RootShell extends StatefulWidget {
+/// Bottom-navigation shell hosting the five primary tabs. Home and Cart are
+/// live; the rest are stubbed and meant to be filled out feature-by-feature.
+class RootShell extends ConsumerStatefulWidget {
   const RootShell({super.key});
 
   @override
-  State<RootShell> createState() => _RootShellState();
+  ConsumerState<RootShell> createState() => _RootShellState();
 }
 
-class _RootShellState extends State<RootShell> {
+class _RootShellState extends ConsumerState<RootShell> {
   int _index = 0;
 
   static const _tabs = <Widget>[
     HomeScreen(),
     _Placeholder(label: 'Categories'),
-    _Placeholder(label: 'Cart'),
+    CartScreen(),
     _Placeholder(label: 'Wishlist'),
     _Placeholder(label: 'Account'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final cartCount = ref.watch(cartCountProvider);
     return Scaffold(
       body: IndexedStack(index: _index, children: _tabs),
       bottomNavigationBar: NavigationBarTheme(
@@ -68,24 +71,32 @@ class _RootShellState extends State<RootShell> {
           height: 64,
           selectedIndex: _index,
           onDestinationSelected: (i) => setState(() => _index = i),
-          destinations: const [
-            NavigationDestination(
+          destinations: [
+            const NavigationDestination(
                 icon: Icon(Icons.home_outlined),
                 selectedIcon: Icon(Icons.home_rounded),
                 label: 'Home'),
-            NavigationDestination(
+            const NavigationDestination(
                 icon: Icon(Icons.grid_view_outlined),
                 selectedIcon: Icon(Icons.grid_view_rounded),
                 label: 'Categories'),
             NavigationDestination(
-                icon: Icon(Icons.shopping_bag_outlined),
-                selectedIcon: Icon(Icons.shopping_bag_rounded),
+                icon: Badge.count(
+                  count: cartCount,
+                  isLabelVisible: cartCount > 0,
+                  child: const Icon(Icons.shopping_bag_outlined),
+                ),
+                selectedIcon: Badge.count(
+                  count: cartCount,
+                  isLabelVisible: cartCount > 0,
+                  child: const Icon(Icons.shopping_bag_rounded),
+                ),
                 label: 'Cart'),
-            NavigationDestination(
+            const NavigationDestination(
                 icon: Icon(Icons.favorite_border_rounded),
                 selectedIcon: Icon(Icons.favorite_rounded),
                 label: 'Wishlist'),
-            NavigationDestination(
+            const NavigationDestination(
                 icon: Icon(Icons.person_outline_rounded),
                 selectedIcon: Icon(Icons.person_rounded),
                 label: 'Account'),
