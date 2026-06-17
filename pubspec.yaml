@@ -1,0 +1,90 @@
+name: ayshamart_app
+description: Ayshamart — Premium mobile & gadget retail store for Bangladesh (WooCommerce powered).
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # ---- State management ----
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # ---- Networking ----
+  dio: ^5.5.0
+  pretty_dio_logger: ^1.4.0
+  connectivity_plus: ^6.0.3
+
+  # ---- Local storage / secure auth ----
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.2.3
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # ---- UI / UX ----
+  cached_network_image: ^3.3.1
+  carousel_slider: ^4.2.1
+  shimmer: ^3.0.0
+  flutter_svg: ^2.0.10+1
+  google_fonts: ^6.2.1
+  smooth_page_indicator: ^1.1.0
+  pull_to_refresh_flutter3: ^2.0.2
+  flutter_staggered_grid_view: ^0.7.0
+
+  # ---- Routing ----
+  go_router: ^14.2.0
+
+  # ---- Localization & formatting ----
+  intl: ^0.19.0
+
+  # ---- Webview (for hosted checkout: SSLCommerz / bKash) ----
+  webview_flutter: ^4.8.0
+
+  # ---- Push notifications ----
+  firebase_core: ^3.1.0
+  firebase_messaging: ^15.0.0
+  flutter_local_notifications: ^17.1.2
+
+  # ---- Misc ----
+  url_launcher: ^6.3.0
+  equatable: ^2.0.5
+  logger: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.0
+  hive_generator: ^2.0.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+
+  # Professional Bengali typography. Download Hind Siliguri / Noto Sans Bengali
+  # weights into assets/fonts/ (see docs/SETUP.md). Falls back to google_fonts
+  # at runtime if the bundled files are absent.
+  fonts:
+    - family: HindSiliguri
+      fonts:
+        - asset: assets/fonts/HindSiliguri-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HindSiliguri-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HindSiliguri-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/HindSiliguri-Bold.ttf
+          weight: 700

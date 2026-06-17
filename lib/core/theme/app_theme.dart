@@ -1,0 +1,131 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../constants/app_colors.dart';
+
+/// App-wide Material 3 theme tuned for a premium gadget store.
+///
+/// Typography strategy: we use **Hind Siliguri** as the primary family because
+/// it has excellent Bengali (বাংলা) coverage AND a clean Latin set, and — most
+/// importantly — it renders the Taka sign (৳) correctly. Bundle the TTFs in
+/// assets/fonts (declared in pubspec.yaml) for offline reliability; this theme
+/// falls back to the google_fonts CDN copy if they are missing during dev.
+class AppTheme {
+  const AppTheme._();
+
+  static String get _fontFamily => 'HindSiliguri';
+
+  static TextTheme _textTheme(TextTheme base) {
+    // google_fonts gives us a verified Bengali-capable fallback at dev time.
+    final tt = GoogleFonts.hindSiliguriTextTheme(base);
+    return tt.apply(
+      bodyColor: AppColors.textPrimary,
+      displayColor: AppColors.textPrimary,
+    );
+  }
+
+  static ThemeData get light {
+    final base = ThemeData.light(useMaterial3: true);
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
+      primary: AppColors.primary,
+      secondary: AppColors.accent,
+      surface: AppColors.surface,
+      error: AppColors.danger,
+      brightness: Brightness.light,
+    );
+
+    return base.copyWith(
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: AppColors.scaffold,
+      primaryColor: AppColors.primary,
+      fontFamily: _fontFamily,
+      textTheme: _textTheme(base.textTheme),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
+        scrolledUnderElevation: 0.5,
+        centerTitle: false,
+        titleTextStyle: TextStyle(
+          fontFamily: 'HindSiliguri',
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+        ),
+      ),
+      cardTheme: CardTheme(
+        color: AppColors.surface,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.border),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          minimumSize: const Size.fromHeight(52),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: const TextStyle(
+            fontFamily: 'HindSiliguri',
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          minimumSize: const Size.fromHeight(52),
+          side: const BorderSide(color: AppColors.primary, width: 1.4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surface,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        hintStyle: const TextStyle(color: AppColors.textMuted),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: AppColors.border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.6),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: AppColors.border),
+        ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.surface,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textMuted,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
+        elevation: 8,
+      ),
+      chipTheme: base.chipTheme.copyWith(
+        backgroundColor: AppColors.scaffold,
+        side: const BorderSide(color: AppColors.border),
+        labelStyle: const TextStyle(color: AppColors.textPrimary),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.border,
+        thickness: 1,
+        space: 1,
+      ),
+    );
+  }
+}

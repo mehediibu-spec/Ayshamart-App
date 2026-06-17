@@ -1,0 +1,21 @@
+{
+  "@@locale": "bn",
+  "appName": "আয়েশামার্ট",
+  "deliverTo": "{city}-এ ডেলিভারি",
+  "searchHint": "ফোন, ল্যাপটপ, গ্যাজেট খুঁজুন…",
+  "shopByCategory": "ক্যাটাগরি অনুযায়ী কেনাকাটা",
+  "flashSale": "ফ্ল্যাশ সেল",
+  "newArrivals": "নতুন এসেছে",
+  "seeAll": "সব দেখুন",
+  "addToCart": "কার্টে যোগ করুন",
+  "add": "যোগ করুন",
+  "outOfStock": "স্টক নেই",
+  "endsIn": "শেষ হবে {time}-এ",
+  "cart": "কার্ট",
+  "checkout": "চেকআউট",
+  "home": "হোম",
+  "categories": "ক্যাটাগরি",
+  "wishlist": "পছন্দের তালিকা",
+  "account": "অ্যাকাউন্ট",
+  "addedToCart": "{name} কার্টে যোগ হয়েছে"
+}
