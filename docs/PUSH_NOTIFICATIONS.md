@@ -21,6 +21,9 @@ flutterfire configure
 
 ## 2. Android Gradle wiring
 
+First re-enable the deps in `pubspec.yaml` (currently commented out):
+`firebase_core`, `firebase_messaging`, `flutter_local_notifications`.
+
 `android/build.gradle`:
 ```gradle
 buildscript { dependencies { classpath 'com.google.gms:google-services:4.4.2' } }
@@ -29,6 +32,24 @@ buildscript { dependencies { classpath 'com.google.gms:google-services:4.4.2' } 
 ```gradle
 apply plugin: 'com.google.gms.google-services'
 ```
+
+**Core library desugaring (required by flutter_local_notifications):** in
+`android/app/build.gradle` add —
+```gradle
+android {
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+}
+dependencies {
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+}
+```
+> Note: the CI workflow regenerates `android/` via `flutter create` each run.
+> Once you start shipping push, commit a real `android/` folder (remove the
+> `flutter create` step) so this config persists.
 
 ## 3. Initialise in `main.dart`
 

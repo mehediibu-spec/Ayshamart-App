@@ -50,9 +50,14 @@ dependencies:
   webview_flutter: ^4.8.0
 
   # ---- Push notifications ----
-  firebase_core: ^3.1.0
-  firebase_messaging: ^15.0.0
-  flutter_local_notifications: ^17.1.2
+  # Temporarily removed until push is actually implemented. These pull in
+  # flutter_local_notifications, which requires Android core-library
+  # desugaring config in android/app/build.gradle (the CI regenerates that
+  # folder each run). Re-add them together with the desugaring setup when
+  # building push — see docs/PUSH_NOTIFICATIONS.md.
+  # firebase_core: ^3.1.0
+  # firebase_messaging: ^15.0.0
+  # flutter_local_notifications: ^17.1.2
 
   # ---- Misc ----
   url_launcher: ^6.3.0
