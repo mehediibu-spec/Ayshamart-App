@@ -39,11 +39,14 @@ class AppTheme {
       brightness: Brightness.light,
     );
 
+    // Note: ThemeData.copyWith has no `fontFamily` param. The Hind Siliguri
+    // family is applied through the google_fonts text themes below (body text)
+    // and explicitly on app bar / button styles (via _fontFamily), which
+    // together cover all rendered text incl. Bengali + the ৳ glyph.
     return base.copyWith(
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.scaffold,
       primaryColor: AppColors.primary,
-      fontFamily: _fontFamily,
       textTheme: _textTheme(base.textTheme),
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.surface,
