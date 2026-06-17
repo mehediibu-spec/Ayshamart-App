@@ -42,7 +42,9 @@ dependencies:
   go_router: ^14.2.0
 
   # ---- Localization & formatting ----
-  intl: ^0.19.0
+  # Must track the version flutter_localizations pins on the current Flutter
+  # stable channel (0.20.x), otherwise pub version solving fails.
+  intl: ^0.20.2
 
   # ---- Webview (for hosted checkout: SSLCommerz / bKash) ----
   webview_flutter: ^4.8.0
