@@ -72,19 +72,19 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    - assets/fonts/
 
-  # Professional Bengali typography. Download Hind Siliguri / Noto Sans Bengali
-  # weights into assets/fonts/ (see docs/SETUP.md). Falls back to google_fonts
-  # at runtime if the bundled files are absent.
-  fonts:
-    - family: HindSiliguri
-      fonts:
-        - asset: assets/fonts/HindSiliguri-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/HindSiliguri-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/HindSiliguri-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/HindSiliguri-Bold.ttf
-          weight: 700
+  # Professional Bengali typography is provided at runtime by the `google_fonts`
+  # package (Hind Siliguri — full Bengali coverage + correct ৳ glyph), so no TTFs
+  # need to be bundled to build/run.
+  #
+  # For PRODUCTION (offline-safe, no first-run network fetch) bundle the TTFs and
+  # re-enable this block — drop HindSiliguri-{Regular,Medium,SemiBold,Bold}.ttf
+  # into assets/fonts/ (see docs/SETUP.md §5):
+  #
+  # fonts:
+  #   - family: HindSiliguri
+  #     fonts:
+  #       - asset: assets/fonts/HindSiliguri-Regular.ttf
+  #         weight: 400
+  #       - asset: assets/fonts/HindSiliguri-Bold.ttf
+  #         weight: 700

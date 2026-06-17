@@ -7,13 +7,17 @@ import '../constants/app_colors.dart';
 ///
 /// Typography strategy: we use **Hind Siliguri** as the primary family because
 /// it has excellent Bengali (বাংলা) coverage AND a clean Latin set, and — most
-/// importantly — it renders the Taka sign (৳) correctly. Bundle the TTFs in
-/// assets/fonts (declared in pubspec.yaml) for offline reliability; this theme
-/// falls back to the google_fonts CDN copy if they are missing during dev.
+/// importantly — it renders the Taka sign (৳) correctly. By default it's loaded
+/// at runtime via `google_fonts` (nothing to bundle to build/run). For an
+/// offline-safe production build, bundle the TTFs and re-enable the `fonts:`
+/// block in pubspec.yaml (see docs/SETUP.md §5).
 class AppTheme {
   const AppTheme._();
 
-  static String get _fontFamily => 'HindSiliguri';
+  /// The dynamically-registered Hind Siliguri family name from google_fonts.
+  /// Used as the global `fontFamily` so non-text-theme widgets (app bar,
+  /// buttons) also render Bengali + ৳ correctly.
+  static final String _fontFamily = GoogleFonts.hindSiliguri().fontFamily!;
 
   static TextTheme _textTheme(TextTheme base) {
     // google_fonts gives us a verified Bengali-capable fallback at dev time.
@@ -41,14 +45,14 @@ class AppTheme {
       primaryColor: AppColors.primary,
       fontFamily: _fontFamily,
       textTheme: _textTheme(base.textTheme),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
         scrolledUnderElevation: 0.5,
         centerTitle: false,
         titleTextStyle: TextStyle(
-          fontFamily: 'HindSiliguri',
+          fontFamily: _fontFamily,
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
@@ -72,8 +76,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: const TextStyle(
-            fontFamily: 'HindSiliguri',
+          textStyle: TextStyle(
+            fontFamily: _fontFamily,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
