@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/network/api_exception.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../providers/core_providers.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../providers/checkout_provider.dart';
 import 'order_success_screen.dart';
@@ -32,6 +33,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   PaymentMethod _method = PaymentMethod.cod;
   bool _placing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Prefill contact details for signed-in customers.
+    final user = ref.read(authControllerProvider).user;
+    if (user != null) {
+      _firstName.text = user.firstName;
+      _lastName.text = user.lastName;
+      _email.text = user.email;
+    }
+  }
 
   @override
   void dispose() {
@@ -185,7 +198,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     try {
       final controller = ref.read(placeOrderProvider.notifier);
-      final placed = await controller.place(items: items, form: form);
+      // Attaches the order to the customer account when signed in (else guest).
+      final customerId = ref.read(currentCustomerIdProvider);
+      final placed = await controller.place(
+        items: items,
+        form: form,
+        customerId: customerId,
+      );
 
       // Online payment → open gateway WebView and reconcile.
       if (placed.requiresPayment) {

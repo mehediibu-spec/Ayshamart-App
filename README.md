@@ -101,13 +101,15 @@ Done:
 - ✅ Cart (SharedPreferences-persisted) with live badge + quantity editing
 - ✅ Checkout flow → `createOrder` (contact/shipping, payment selection, summary)
 - ✅ SSLCommerz / bKash / COD payment via hosted WebView + status reconcile
+- ✅ Auth: JWT login + registration, secure token storage, Account tab with
+  Bengali/English language toggle; orders link to the signed-in customer
 
 Next:
-1. Auth screens wired to the JWT endpoints (interceptor already in place)
-2. Search + category listing screens
+1. Search + category listing screens
+2. Order history under the Account tab (GET `wc/v3/orders?customer=<id>`)
 3. Coupon entry + real shipping zones at checkout
 4. FCM wiring (`docs/PUSH_NOTIFICATIONS.md`)
-5. Order history under the Account tab
+5. Forgot-password flow
 
 ### Shopping flow (implemented)
 ```

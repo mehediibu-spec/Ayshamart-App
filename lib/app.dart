@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/constants/app_colors.dart';
 import 'core/theme/app_theme.dart';
+import 'features/account/presentation/account_screen.dart';
 import 'features/cart/presentation/cart_screen.dart';
 import 'features/cart/providers/cart_provider.dart';
 import 'features/home/presentation/home_screen.dart';
@@ -51,7 +52,7 @@ class _RootShellState extends ConsumerState<RootShell> {
     _Placeholder(label: 'Categories'),
     CartScreen(),
     _Placeholder(label: 'Wishlist'),
-    _Placeholder(label: 'Account'),
+    AccountScreen(),
   ];
 
   @override
