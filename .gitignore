@@ -33,3 +33,7 @@ ios/Flutter/Flutter.podspec
 .env
 *.env
 secrets.dart
+# Local build config holding WooCommerce keys
+config/*.json
+config/dev.json
+config/prod.json
